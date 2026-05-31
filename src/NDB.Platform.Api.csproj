@@ -1,0 +1,65 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+    <PackageId>NDB.Platform.Api</PackageId>
+    <Title>NDB Platform Api</Title>
+    <Description>
+      The web API layer library for NDB Platform projects. Wraps ASP.NET Core infrastructure
+      into consistent, pre-configured building blocks:
+
+      Authentication — JWT Bearer dual-token (access 15 min / refresh 7 days), HMAC-SHA256,
+      fail-fast option validation, Token-Expired header support, and configurable token refresh.
+
+      Authorization — Granular permission-based authorization via IPermissionResolver
+      (RequirePermissionAttribute + dynamic policy provider), role-based shorthand
+      (NdbRequireRoleAttribute), and superadmin bypass via JWT claim or role.
+
+      Result → HTTP — ResultActionFilter auto-converts Result/Result&lt;T&gt;/PagedResult&lt;T&gt;/
+      CollectionResult&lt;T&gt; return values to a consistent ApiResponse JSON envelope.
+
+      Middleware — CorrelationIdMiddleware (X-Correlation-ID propagation),
+      RequestLoggingMiddleware (method/path/duration/actor/status), GlobalExceptionHandler
+      (unhandled exceptions → 500 ApiResponse JSON).
+
+      Hangfire — Provider-agnostic background job wrapper. Install the storage provider
+      in the consuming project. Dashboard protected by timing-safe Basic Auth.
+
+      Swagger — Swashbuckle pre-configured with JWT Bearer security scheme and API versioning.
+
+      Additional — CORS policy, ForwardedHeaders (reverse proxy), health check endpoints
+      (/health/live, /health/ready), API versioning (URL segment), BaseController with
+      lazy Mediator and current-user properties, IPdfRenderer abstraction.
+
+      Requires NDB.Platform.Core and NDB.Platform.Data (installed automatically).
+    </Description>
+    <RootNamespace>NDB.Platform.Api</RootNamespace>
+    <AssemblyName>NDB.Platform.Api</AssemblyName>
+    <NoWarn>$(NoWarn);CA1873</NoWarn>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup Label="Package Assets">
+    <None Include="../README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup Label="NDB Platform">
+    <PackageReference Include="NDB.Platform.Core" />
+    <PackageReference Include="NDB.Platform.Data" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" />
+    <PackageReference Include="Hangfire.Core" />
+    <PackageReference Include="Hangfire.AspNetCore" />
+    <PackageReference Include="Swashbuckle.AspNetCore" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" />
+    <PackageReference Include="Asp.Versioning.Mvc" />
+    <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" />
+  </ItemGroup>
+</Project>
